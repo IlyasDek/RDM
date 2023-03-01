@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from 'environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
 import {User} from 'app/model/user';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
@@ -14,13 +14,19 @@ export class AuthenticationService {
   private loggedInUsername: string;
   private jwtHelper = new JwtHelperService();
   private isAdmin: boolean = false;
-  private currentUser: any;
+  private currentUserSubject: BehaviorSubject<User>;
+  public currentUser: Observable<User>;
+
 
 
   constructor(private http: HttpClient) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
   }
 
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
+  }
   setIsAdmin(isAdmin: boolean) {
     this.isAdmin = isAdmin;
   }
@@ -80,12 +86,7 @@ export class AuthenticationService {
       return false;
     }
   }
-  public getUserRole(): string {
-    return this.currentUser ? this.currentUser.role : '';
+  public printCurrentUser(): void {
+    console.log(this.currentUserValue);
   }
-
-  public isAuthenticated(): boolean {
-    return this.currentUser !== null && this.currentUser !== undefined;
-  }
-  
 }

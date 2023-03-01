@@ -39,6 +39,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.authenticationService.printCurrentUser();
     this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsers(true);
   }
