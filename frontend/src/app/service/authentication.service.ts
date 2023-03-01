@@ -14,9 +14,11 @@ export class AuthenticationService {
   private loggedInUsername: string;
   private jwtHelper = new JwtHelperService();
   private isAdmin: boolean = false;
+  private currentUser: any;
 
 
   constructor(private http: HttpClient) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   setIsAdmin(isAdmin: boolean) {
@@ -78,4 +80,12 @@ export class AuthenticationService {
       return false;
     }
   }
+  public getUserRole(): string {
+    return this.currentUser ? this.currentUser.role : '';
+  }
+
+  public isAuthenticated(): boolean {
+    return this.currentUser !== null && this.currentUser !== undefined;
+  }
+  
 }
