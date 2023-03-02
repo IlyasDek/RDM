@@ -1,15 +1,19 @@
 import {Injectable} from '@angular/core';
 import {environment} from 'environments/environment';
 import {HttpClient, HttpErrorResponse, HttpEvent} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {User} from 'app/model/user';
 import {CustomHttpRespone} from '../model/custom-http-response';
+import { Role } from '../enum/role.enum';
+import { AuthenticationService } from './authentication.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private host = environment.apiUrl + '/user';
+  private authenticationService: AuthenticationService;
 
   constructor(private http: HttpClient) {
   }
@@ -22,9 +26,27 @@ export class UserService {
     return this.http.post<User>(`${this.host}/add`, formData);
   }
 
-  public updateUser(formData: FormData): Observable<User | HttpErrorResponse> {
-    return this.http.post<User>(`${this.host}/update`, formData);
+  // public updateUser(formData: FormData): Observable<User | HttpErrorResponse> {
+  //   return this.http.post<User>(`${this.host}/update`, formData);
+  // }
+
+  public updateUser(id: number, formData: FormData): Observable<User> {
+    const currentUser = this.authenticationService.currentUserValue;
+    if (currentUser.role === Role.SUPER_ADMIN) {
+      return this.http.put<User>(`${this.host}/${id}`, formData);
+    } else {
+      return throwError('Only SUPER ADMIN can update other users.');
+    }
   }
+
+  // updateUser(id: number, user: User): Observable<User> {
+  //   const currentUser = this.authenticationService.currentUserValue;
+  //   if (currentUser.role === Role.SUPER_ADMIN) {
+  //     return this.http.put<User>(`${this.baseUrl}/${id}`, user);
+  //   } else {
+  //     return throwError('Only SUPER ADMIN can update other users.');
+  //   }
+  // }
 
   public resetPassword(email: string): Observable<CustomHttpRespone | HttpErrorResponse> {
     return this.http.get<CustomHttpRespone>(`${this.host}/resetPassword/${email}`);

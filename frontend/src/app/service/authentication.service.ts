@@ -16,6 +16,7 @@ export class AuthenticationService {
   private isAdmin: boolean = false;
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  private readonly JWT_TOKEN_EXPIRATION: number = 60 * 60 * 1000;
 
 
 
@@ -56,8 +57,15 @@ export class AuthenticationService {
     localStorage.setItem('token', token);
   }
 
-  public addUserToLocalCache(user: User): void {
-    localStorage.setItem('user', JSON.stringify(user));
+  // public addUserToLocalCache(user: User): void {
+  //   localStorage.setItem('user', JSON.stringify(user));
+  // }
+
+  addUserToLocalCache(user: User): void {
+    const now = new Date();
+    const expirationDate = new Date(now.getTime() + this.JWT_TOKEN_EXPIRATION * 1000);
+    localStorage.setItem('currentUser', JSON.stringify({ user, expiration: expirationDate.toISOString() }));
+    this.currentUserSubject.next(user);
   }
 
   public getUserFromLocalCache(): User {
@@ -86,7 +94,7 @@ export class AuthenticationService {
       return false;
     }
   }
-  public printCurrentUser(): void {
-    console.log(this.currentUserValue);
+  public getCurrentUser() {
+    return this.currentUserValue;
   }
 }
