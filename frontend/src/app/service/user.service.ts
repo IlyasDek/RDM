@@ -26,18 +26,24 @@ export class UserService {
     return this.http.post<User>(`${this.host}/add`, formData);
   }
 
-  // public updateUser(formData: FormData): Observable<User | HttpErrorResponse> {
-  //   return this.http.post<User>(`${this.host}/update`, formData);
-  // }
-
-  public updateUser(id: number, formData: FormData): Observable<User> {
-    const currentUser = this.authenticationService.currentUserValue;
-    if (currentUser.role === Role.SUPER_ADMIN) {
-      return this.http.put<User>(`${this.host}/${id}`, formData);
-    } else {
+  public updateUser(formData: FormData, currentUserRole: any): Observable<User | HttpErrorResponse> {
+    if(currentUserRole === Role.SUPER_ADMIN)
+      return this.http.post<User>(`${this.host}/update`, formData);
+    else
       return throwError('Only SUPER ADMIN can update other users.');
-    }
   }
+
+  // public updateUser(id: number, formData: FormData, userRole: string): Observable<User> {
+  //   // const currentUser = this.authenticationService.currentUserValue;
+  //   // if (!currentUser) {
+  //   //   return throwError('Current user is not defined');
+  //   // }
+  //   if (userRole === Role.SUPER_ADMIN) {
+  //     return this.http.put<User>(`${this.host}/${id}`, formData);
+  //   } else {
+  //     return throwError('Only SUPER ADMIN can update other users.');
+  //   }
+  // }
 
   // updateUser(id: number, user: User): Observable<User> {
   //   const currentUser = this.authenticationService.currentUserValue;

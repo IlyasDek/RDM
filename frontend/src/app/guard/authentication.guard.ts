@@ -16,6 +16,18 @@ export class AuthenticationGuard implements CanActivate {
     return this.isUserLoggedIn();
   }
 
+  // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  //   const currentUser = this.authenticationService.currentUserValue;
+  //   if (this.authenticationService.isUserLoggedIn() && currentUser.role === 'ROLE_SUPER_ADMIN') {
+  //     // Если пользователь авторизован и имеет роль SUPER_ADMIN, разрешаем ему доступ
+  //     return this.isUserLoggedIn();
+  //   }
+  //   // Если пользователь не авторизован или не имеет прав, перенаправляем его на страницу входа
+  //   this.router.navigate(['/login']);
+  //   this.notificationService.notify(NotificationType.ERROR, `You need to log in as SUPER ADMIN to access this page`);
+  //   return false;
+  // }
+
   private isUserLoggedIn(): boolean {
     if (this.authenticationService.isUserLoggedIn()) {
       return true;

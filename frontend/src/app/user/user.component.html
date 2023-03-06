@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-4">
       <h5>Raster Data Management</h5>
-      <!-- <small *ngIf="titleAction$ | async as title">{{title}}</small> -->
+      <small *ngIf="titleAction$ | async as title">{{title}}</small>
     </div>
     <div class="col-md-4">
     </div>
@@ -23,27 +23,6 @@
           <em class="fa fa-users"></em>
           Пользователи
         </a>
-        <!-- <a class="nav-item nav-link active ml-1 custom-link" (click)="changeTitle('Users')" data-toggle="tab"
-           href="#users">
-          <em class="fa fa-users"></em>
-          Управление документами
-        </a>
-        <a class="nav-item nav-link active ml-1 custom-link" (click)="changeTitle('Users')" data-toggle="tab"
-           href="#users">
-          Отчетность
-        </a>
-        <a class="nav-item nav-link active ml-1 custom-link" (click)="changeTitle('Users')" data-toggle="tab"
-           href="#users">
-          Дашборды
-        </a>
-        <a class="nav-item nav-link active ml-1 custom-link" (click)="changeTitle('Users')" data-toggle="tab"
-           href="#users">
-          Производительность
-        </a> -->
-        <!-- <a class="nav-item nav-link ml-1 custom-link" (click)="changeTitle('Users')" data-toggle="tab"
-           href="#users">
-          Catalog Explorer
-        </a> -->
         <a [hidden]="!isAdmin" class="nav-item nav-link ml-3 custom-link" (click)="changeTitle('Settings')" data-toggle="tab"
            href="#reset-password">
           <em class="fa fa-cogs"></em>
@@ -68,7 +47,7 @@
             <input name="searchTerm" #searchInput="ngModel" class="form-control mr-sm-2" ngModel
                    (ngModelChange)="searchUsers(searchInput.value)" type="search" placeholder="Найти...">
           </form>
-          <button [hidden]="!isAdminOrManager" type="button" class="btn btn-info" data-toggle="modal"
+          <button [hidden]="!isAdmin" type="button" class="btn btn-info" data-toggle="modal"
                   data-target="#addUserModal">
             <em class="fa fa-plus"></em>  Добавить
           </button>
@@ -96,10 +75,6 @@
         </thead>
         <tbody *ngFor="let appUser of users">
         <tr class="text-center">
-          <!-- <td>
-            <img height="40" width="40" src="{{appUser?.profileImageUrl}}"
-                 class="rounded-circle img-fluid img-thumbnail" alt=""/>
-          </td> -->
           <td (click)="onSelectUser(appUser)">{{appUser?.userId}}</td>
           <td (click)="onSelectUser(appUser)">{{appUser?.firstName}}</td>
           <td (click)="onSelectUser(appUser)">{{appUser?.lastName}}</td>
@@ -162,15 +137,6 @@
                       <div class="row">
                         <div class="col-12 col-sm-auto">
                           <div class="mx-auto" style="width: 120px;">
-                            <!-- <div class="d-flex justify-content-center align-items-center rounded">
-                              <img class="rounded" height="135" width="135" src="{{user?.profileImageUrl}}" alt="">
-                            </div> -->
-                            <!-- <div *ngIf="fileStatus?.status==='progress'" class="progress mt-1">
-                              <div class="progress-bar bg-info" role="progressbar"
-                                   [style.width.%]="fileStatus?.percentage" aria-valuenow="0" aria-valuemin="0"
-                                   aria-valuemax="100">{{fileStatus?.percentage}}%
-                              </div>
-                            </div> -->
                           </div>
                         </div>
                         <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
@@ -179,12 +145,6 @@
                             <p class="mb-0">{{user?.username}}</p>
                             <div *ngIf="user?.lastLoginDateDisplay !== null" class="text-muted"><small>Last login:
                               {{user?.lastLoginDateDisplay | date:'medium'}}</small></div>
-                            <!-- <div class="mt-2">
-                              <button (click)="updateProfileImage()" class="btn btn-primary" type="button">
-                                <em class="fa fa-fw fa-camera"></em>
-                                <span>Change Photo</span>
-                              </button>
-                            </div> -->
                           </div>
                           <div class="text-center text-sm-right">
                             <div class="text-muted"><small>Joined {{user?.joinDate | date:'mediumDate'}}</small></div>
@@ -327,14 +287,6 @@
               <div class="card">
                 <div class="card-body">
                   <div class="row">
-                    <!-- <div class="col-12 col-sm-auto">
-                      <div class="mx-auto" style="width: 120px;">
-                        <div class="d-flex justify-content-center align-items-center rounded">
-                          <img class="rounded" height="120" width="120" src="{{selectedUser?.profileImageUrl}}"
-                               alt="{{selectedUser?.firstName}}">
-                        </div>
-                      </div>
-                    </div> -->
                     <div class="col d-flex flex-column flex-sm-row justify-content-between">
                       <div class="text-center text-sm-left mb-sm-0">
                         <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser?.firstName}}
@@ -395,7 +347,7 @@
     </div>
 
     <!-- model add user -->
-    <div [hidden]="!isAdminOrManager" class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
+    <div [hidden]="!isAdmin" class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -439,17 +391,6 @@
                   <input type="text" name="role" required ngModel="USER" readonly class="form-control">
                 </div>
                 <div class="input-group mb-2">
-                  <!-- <div class="input-group-prepend">
-                    <span class="input-group-text">Profile Picture </span>
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" accept="image/*" name="profileImage"
-                           (change)="onProfileImageChange($event.target.files[0].name, $event.target.files[0])"
-                           class="custom-file-input">
-                    <label class="custom-file-label"><span [hidden]="!fileName">{{ fileName }}</span>
-                      <span [hidden]="fileName">Choose File</span>
-                    </label>
-                  </div> -->
                 </div>
                 <fieldset class="form-group">
                   <legend></legend>
@@ -486,7 +427,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-center">Редактировать {{editUser?.firstName}}
-              {{editUser?.lastName}} <small [hidden]="!isAdminOrManager">
+              {{editUser?.lastName}} <small [hidden]="!isAdmin">
                 (read only)
               </small></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -498,22 +439,22 @@
               <form #editUserForm="ngForm">
                 <div class="form-group">
                   <label for="firstName">Имя</label>
-                  <input type="text" name="firstName" [hidden]="!isAdminOrManager" required
+                  <input type="text" name="firstName" [hidden]="!isAdmin" required
                          [(ngModel)]="editUser.firstName" class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="lastName">Фамилия</label>
-                  <input type="text" name="lastName" [hidden]="!isAdminOrManager" required
+                  <input type="text" name="lastName" [hidden]="!isAdmin" required
                          [(ngModel)]="editUser.lastName" class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="username">Логин</label>
-                  <input type="text" name="username" [hidden]="!isAdminOrManager" required
+                  <input type="text" name="username" [hidden]="!isAdmin" required
                          [(ngModel)]="editUser.username" class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="email" name="email" [hidden]="!isAdminOrManager" required
+                  <input type="email" name="email" [hidden]="!isAdmin" required
                          [(ngModel)]="editUser.email" class="form-control">
                 </div>
                 <div class="form-group">
@@ -527,32 +468,21 @@
                   </select>
                 </div>
                 <div class="input-group mb-2">
-                  <!-- <div class="input-group-prepend">
-                    <span class="input-group-text">Profile Picture </span>
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" accept="image/*" [disabled]="!isAdminOrManager" name="profileImage"
-                           (change)="onProfileImageChange($event.target.files[0].name, $event.target.files[0])"
-                           class="custom-file-input">
-                    <label class="custom-file-label"><span [hidden]="!fileName">{{fileName}}</span>
-                      <span [hidden]="fileName">Choose File</span>
-                    </label>
-                  </div> -->
                 </div>
                 <fieldset class="form-group">
                   <legend></legend>
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input name="active" type="checkbox" [disabled]="!isManager" [(ngModel)]="editUser.active"
+                      <input name="active" type="checkbox" [disabled]="!isAdmin" [(ngModel)]="editUser.active"
                              class="form-check-input">
-                      Acitve <small [hidden]="isManager">(read only)</small>
+                      Acitve <small [hidden]="isAdmin">(read only)</small>
                     </label>
                   </div>
                   <div class="form-check disabled">
                     <label class="form-check-label">
-                      <input name="locked" type="checkbox" [disabled]="!isManager" [(ngModel)]="editUser.notLocked"
+                      <input name="locked" type="checkbox" [disabled]="!isAdmin" [(ngModel)]="editUser.notLocked"
                              class="form-check-input">
-                      Unlocked <small [hidden]="isManager">(read only)</small>
+                      Unlocked <small [hidden]="isAdmin">(read only)</small>
                     </label>
                   </div>
                 </fieldset>
@@ -562,7 +492,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Закрыть
             </button>
-            <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid || isAdminOrManager" class="btn btn-primary">Сохранить изменения</button>
+            <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid || !isAdmin" class="btn btn-primary">Сохранить изменения</button>
           </div>
         </div>
       </div>

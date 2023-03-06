@@ -26,6 +26,7 @@ export class AuthenticationService {
   }
 
   public get currentUserValue(): User {
+    // console.log(this.currentUserSubject);
     return this.currentUserSubject.value;
   }
   setIsAdmin(isAdmin: boolean) {
@@ -79,6 +80,17 @@ export class AuthenticationService {
   public getToken(): string {
     return this.token;
   }
+  
+  private storeUser(user: User): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  autoLogin(): void {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (user) {
+      this.currentUserSubject.next(user);
+    }
+  }
 
   public isUserLoggedIn(): boolean {
     this.loadToken();
@@ -94,7 +106,7 @@ export class AuthenticationService {
       return false;
     }
   }
-  public getCurrentUser() {
-    return this.currentUserValue;
-  }
+  // public getCurrentUser() {
+  //   return this.currentUserValue;
+  // }
 }

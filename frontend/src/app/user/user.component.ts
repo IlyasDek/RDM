@@ -12,7 +12,6 @@ import {FileUploadStatus} from 'app/model/file-upload.status';
 import {CustomHttpRespone} from '../model/custom-http-response';
 import {Role} from 'app/enum/role.enum';
 import {SubSink} from 'subsink';
-import {SidebarComponent } from 'app/sidebar/sidebar.component'
 
 @Component({
   selector: 'app-user',
@@ -39,7 +38,6 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.authenticationService.printCurrentUser();
     this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsers(true);
   }
@@ -105,7 +103,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public onUpdateUser(): void {
     const formData = this.userService.createUserFormDate(this.currentUsername, this.editUser,  this.user.role);
     this.subscriptions.push(
-      this.userService.updateUser(parseInt(this.user.userId), formData).subscribe(
+      this.userService.updateUser(formData, this.authenticationService.getUserFromLocalCache().role).subscribe(
         (response: User) => {
           this.clickButton('closeEditUserModalButton');
           this.getUsers(false);
@@ -126,7 +124,7 @@ export class UserComponent implements OnInit, OnDestroy {
     this.currentUsername = this.authenticationService.getUserFromLocalCache().username;
     const formData = this.userService.createUserFormDate(this.currentUsername, user,  this.user.role);
     this.subscriptions.push(
-      this.userService.updateUser(parseInt(this.user.userId), formData).subscribe(
+      this.userService.updateUser(formData, this.authenticationService.getUserFromLocalCache().role).subscribe(
         (response: User) => {
           this.authenticationService.addUserToLocalCache(response);
           this.getUsers(false);
